@@ -9,20 +9,22 @@ from Mask.config import Config
 import Mask.utils as utils
 import Mask.model as modellib
 import Mask.visualize as visualize
+import tensorflow as tf
 
 np.set_printoptions(threshold=np.inf)
-
+tf.logging.set_verbosity(tf.logging.ERROR)
 # path of the trained model
 dir_path = os.path.dirname(os.path.realpath(__file__))
 MODEL_DIR = dir_path + "/models/"
 MODEL_PATH = input("Insert the path of your trained model [ Like models/moles.../mask_rcnn_moles_0030.h5 ]: ")
-if os.path.isfile(MODEL_PATH) == False:
-    raise Exception(MODEL_PATH + " Does not exists")
-
+#if os.path.isfile(MODEL_PATH) == False:
+#    raise Exception(MODEL_PATH + " Does not exists")
+MODEL_PATH = "models/moles20190910T1743/mask_rcnn_moles_0033.h5"
 # path of Data that contain Descriptions and Images
 path_data = input("Insert the path of Data [ Link /home/../ISIC-Archive-Downloader/Data/ ] : ")
-if not os.path.exists(path_data):
-    raise Exception(path_data + " Does not exists")
+path_data = "Data/Images"
+#if not os.path.exists(path_data):
+#    raise Exception(path_data + " Does not exists")
 
 
 class CocoConfig(Config):

@@ -10,12 +10,13 @@ import Mask.utils as utils
 import Mask.model as modellib
 import Mask.visualize as visualize
 
-segmentation_img_path = "/home/zain/Piyarse/Data/Segmentation"
-orig_img_path = "/home/zain/Piyarse/Data/Images"
+segmentation_img_path = "Data/Segmentation"
+orig_img_path = "Data/Images"
 dir_path = os.path.dirname(os.path.realpath(__file__))
 MODEL_DIR = dir_path + "/models/"
-COCO_MODEL_PATH = dir_path + "/Mask/mask_rcnn_coco.h5"
-if os.path.isfile(COCO_MODEL_PATH) == False:
+COCO_MODEL_PATH = "models/mask_rcnn_coco.h5"
+if not os.path.isfile(COCO_MODEL_PATH):
+    print(COCO_MODEL_PATH)
     raise Exception("You have to download mask_rcnn_coco.h5 inside Mask folder \n\
     You can find it here: https://github.com/matterport/Mask_RCNN/releases/download/v2.0/mask_rcnn_coco.h5")
 
@@ -56,7 +57,7 @@ class MoleDataset(utils.Dataset):
     '''
     def load_shapes(self, dataset, height, width):
         ''' Add the 2 class of skin cancer and put the metadata inside the model'''
-        self.add_class("moles", 1, "malignant")
+        self.add_class("moles", 1, "malign")
         self.add_class("moles", 2, "benign")
 
         for i, info in enumerate(dataset):
@@ -88,18 +89,18 @@ config = MolesConfig()
 all_info = []
 
 # path of Data that contain Descriptions and Images
-path_data = input("Insert the path of Data [ Link /home/../ISIC-Archive-Downloader/Data/ ] : ")
-if not os.path.exists(path_data):
-    raise Exception(path_data + " Does not exists")
+#path_data = input("Insert the path of Data [ Link /home/../ISIC-Archive-Downloader/Data/ ] : ")
+#if not os.path.exists(path_data):
+#    raise Exception(path_data + " Does not exists")
 
 warning = True
 
 # Load all the images, mask and description of the Dataset
 for orig, seg in zip(os.listdir(orig_img_path), os.listdir(segmentation_img_path)):
-    orig_img = cv2.imread(os.path.join(orig_img_path,orig))
-    seg_img = cv2.imread(os.path.join(segmentation_img_path, seg))
+    img = cv2.imread(os.path.join(orig_img_path,orig))
+    mask = cv2.imread(os.path.join(segmentation_img_path, seg))
     classname = orig.split('.')[0].split('_')[1]
-    if orig_img is None or seg_img is None:
+    if img is None or mask is None:
         continue
     img = cv2.resize(img, (128, 128))
     mask = cv2.resize(mask, (128, 128))
