@@ -93,7 +93,7 @@ def display_instances(image, boxes, masks, class_ids, class_names,
     # Number of instances
     N = boxes.shape[0]
     if not N:
-        print("\n*** No instances to display *** \n")
+        pass
     else:
         assert boxes.shape[0] == masks.shape[-1] == class_ids.shape[0]
 
@@ -156,9 +156,10 @@ def display_instances(image, boxes, masks, class_ids, class_names,
             verts = np.fliplr(verts) - 1
             p = Polygon(verts, facecolor="none", edgecolor=color)
             ax.add_patch(p)
-    ax.imshow(masked_image.astype(np.uint8))
-    if auto_show:
-        plt.show()
+    #ax.imshow(masked_image.astype(np.uint8))
+    # if auto_show:
+    #     plt.show()
+    return masked_image.astype(np.uint8)
 
 
 def display_differences(image,
@@ -493,3 +494,4 @@ def display_weight_stats(model):
                 "{:+9.4f}".format(w.std()),
             ])
     display_table(table)
+
